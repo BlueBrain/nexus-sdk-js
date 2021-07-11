@@ -1,4 +1,5 @@
 import { Resource } from '../Resource/types';
+import { ExecutionOption } from '../types';
 
 export type NexusFile = Resource & {
   '@type': 'File';
@@ -32,9 +33,19 @@ export type FilePayload = {
   file: FormData;
 };
 
-export type CreateFileOptions = {
+export type CreateFileOptions = ExecutionOption & {
   extraHeaders?: { [key: string]: string };
 };
+
+export type UpdateFileOptions = ExecutionOption & {
+  extraHeaders?: { [key: string]: string };
+};
+
+export type DeprecateFileOptions = ExecutionOption & {};
+
+export type TagFileOptions = ExecutionOption & {};
+
+export type LinkFileOptions = ExecutionOption & {};
 
 export type UpdateFilePayload = FilePayload & {
   '@id': string; // mandatory

@@ -129,7 +129,7 @@ describe('Views', () => {
       await view.create('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/views/org/project',
+        'http://api.url/v1/views/org/project?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -169,7 +169,7 @@ describe('Views', () => {
       await view.update('org', 'project', 'myViewId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/views/org/project/myViewId?rev=1',
+        'http://api.url/v1/views/org/project/myViewId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -186,7 +186,7 @@ describe('Views', () => {
       await view.tag('org', 'project', 'myViewId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/views/org/project/myViewId?rev=1',
+        'http://api.url/v1/views/org/project/myViewId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -199,7 +199,7 @@ describe('Views', () => {
       await view.deprecate('org', 'project', 'myViewId', 1);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/views/org/project/myViewId?rev=1',
+        'http://api.url/v1/views/org/project/myViewId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].method).toEqual('DELETE');
     });
@@ -309,7 +309,7 @@ describe('Views', () => {
       await view.restart('org', 'project', 'myViewId');
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/views/org/project/myViewId/progress',
+        'http://api.url/v1/views/org/project/myViewId/progress?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].method).toEqual('DELETE');
     });
@@ -342,7 +342,7 @@ describe('Views', () => {
       );
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/views/org/project/myViewId/projections/projectionId',
+        'http://api.url/v1/views/org/project/myViewId/projections/projectionId?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].method).toEqual('DELETE');
     });

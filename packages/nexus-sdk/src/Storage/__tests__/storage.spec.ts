@@ -117,7 +117,7 @@ describe('Storage', () => {
       await storage.create('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/storages/org/project',
+        'http://api.url/v1/storages/org/project?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -139,7 +139,7 @@ describe('Storage', () => {
       await storage.update('org', 'project', 'myStorageId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/storages/org/project/myStorageId?rev=1',
+        'http://api.url/v1/storages/org/project/myStorageId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -156,7 +156,7 @@ describe('Storage', () => {
       await storage.tag('org', 'project', 'myViewId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/storages/org/project/myViewId?rev=1',
+        'http://api.url/v1/storages/org/project/myViewId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -169,7 +169,7 @@ describe('Storage', () => {
       await storage.deprecate('org', 'project', 'myStorageId', 1);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/storages/org/project/myStorageId?rev=1',
+        'http://api.url/v1/storages/org/project/myStorageId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].method).toEqual('DELETE');
     });

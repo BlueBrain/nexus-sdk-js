@@ -10,6 +10,8 @@ export type Fetchers = {
   poll: Link;
 };
 
+export type ExecutionOption = { execution?: 'consistent' | 'performant' };
+
 export type Context =
   | string
   | (string | { [key: string]: any })[]

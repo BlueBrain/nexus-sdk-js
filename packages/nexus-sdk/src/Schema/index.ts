@@ -4,6 +4,7 @@ import {
   GetSchemaOptions,
   ListSchemaOptions,
   SchemaList,
+  SchemaOptions,
   SchemaPayload,
 } from './types';
 import { NexusContext } from '../nexusSdk';
@@ -49,22 +50,28 @@ const Schema = (
       orgLabel: string,
       projectLabel: string,
       payload: SchemaPayload,
-    ): Promise<Resource> =>
-      httpPost({
-        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}`,
+      options: SchemaOptions = { execution: 'consistent' },
+    ): Promise<Resource> => {
+      const opts = buildQueryParams(options);
+      return httpPost({
+        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}${opts}`,
         body: JSON.stringify(payload),
-      }),
+      });
+    },
     update: (
       orgLabel: string,
       projectLabel: string,
       schemaId: string,
       rev: number,
       payload: SchemaPayload,
-    ): Promise<Resource> =>
-      httpPut({
-        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}/${schemaId}?rev=${rev}`,
+      options: SchemaOptions = { execution: 'consistent' },
+    ): Promise<Resource> => {
+      const opts = buildQueryParams({ ...options, rev });
+      return httpPut({
+        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}/${schemaId}${opts}`,
         body: JSON.stringify(payload),
-      }),
+      });
+    },
     tag: (
       orgLabel: string,
       projectLabel: string,
@@ -74,20 +81,26 @@ const Schema = (
         tag: string;
         rev: number;
       },
-    ): Promise<Resource> =>
-      httpPost({
-        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}/${schemaId}?rev=${rev}`,
+      options: SchemaOptions = { execution: 'consistent' },
+    ): Promise<Resource> => {
+      const opts = buildQueryParams({ ...options, rev });
+      return httpPost({
+        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}/${schemaId}${opts}`,
         body: JSON.stringify(payload),
-      }),
+      });
+    },
     deprecate: (
       orgLabel: string,
       projectLabel: string,
       schemaId: string,
       rev: number,
-    ): Promise<Resource> =>
-      httpDelete({
-        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}/${schemaId}?rev=${rev}`,
-      }),
+      options: SchemaOptions = { execution: 'consistent' },
+    ): Promise<Resource> => {
+      const opts = buildQueryParams({ ...options, rev });
+      return httpDelete({
+        path: `${context.uri}/schemas/${orgLabel}/${projectLabel}/${schemaId}${opts}`,
+      });
+    },
     poll: (
       orgLabel: string,
       projectLabel: string,

@@ -13,6 +13,10 @@ import {
   ResourceList,
   PaginatedList,
   ExpandedResource,
+  ResourceCreateOptions,
+  ResourceDeprecateOptions,
+  ResourceUpdateOptions,
+  ResourceTagOptions,
 } from './types';
 import { NexusContext } from '../nexusSdk';
 import { buildHeader, buildQueryParams, parseAsBuilder } from '../utils';
@@ -73,16 +77,21 @@ const Resource = (
       payload: ResourcePayload,
       schemaId: string = '_',
       resourceId?: string,
+      options: ResourceCreateOptions = { execution: 'consistent' },
     ): Promise<Resource> =>
       resourceId
         ? httpPut({
-            path: `${context.uri}/resources/${orgLabel}/${projectLabel}/${schemaId}/${resourceId}`,
+            path: `${
+              context.uri
+            }/resources/${orgLabel}/${projectLabel}/${schemaId}/${resourceId}${buildQueryParams(
+              options,
+            )}`,
             body: JSON.stringify(payload),
           })
         : httpPost({
             path: `${context.uri}/resources/${orgLabel}/${projectLabel}${
               schemaId === '_' ? '' : `/${schemaId}`
-            }`,
+            }${buildQueryParams(options)}`,
             body: JSON.stringify(payload),
           }),
     update: (
@@ -92,12 +101,16 @@ const Resource = (
       rev: number,
       payload: ResourcePayload,
       schemaId?: string,
+      options: ResourceUpdateOptions = { execution: 'consistent' },
     ): Promise<Resource> =>
       httpPut({
         path: `${
           context.uri
         }/resources/${orgLabel}/${projectLabel}/${schemaId ||
-          DEFAULT_SCHEMA_ID}/${resourceId}?rev=${rev}`,
+          DEFAULT_SCHEMA_ID}/${resourceId}${buildQueryParams({
+          rev,
+          ...options,
+        })}`,
         body: JSON.stringify(payload),
       }),
     tag: (
@@ -109,9 +122,14 @@ const Resource = (
         tag: string;
         rev: number;
       },
+      options: ResourceTagOptions = { execution: 'consistent' },
     ): Promise<Resource> =>
       httpPost({
-        path: `${context.uri}/resources/${orgLabel}/${projectLabel}/${resourceId}?rev=${rev}`,
+        path: `${
+          context.uri
+        }/resources/${orgLabel}/${projectLabel}/${resourceId}${buildQueryParams(
+          { ...options, rev },
+        )}`,
         body: JSON.stringify(payload),
       }),
     deprecate: (
@@ -120,12 +138,16 @@ const Resource = (
       resourceId: string,
       rev: number,
       schemaId?: string,
+      options: ResourceDeprecateOptions = { execution: 'consistent' },
     ): Promise<Resource> =>
       httpDelete({
         path: `${
           context.uri
         }/resources/${orgLabel}/${projectLabel}/${schemaId ||
-          DEFAULT_SCHEMA_ID}/${resourceId}?rev=${rev}`,
+          DEFAULT_SCHEMA_ID}/${resourceId}${buildQueryParams({
+          rev,
+          ...options,
+        })}`,
       }),
     poll: <T>(
       orgLabel: string,

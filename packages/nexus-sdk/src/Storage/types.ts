@@ -1,4 +1,4 @@
-import { Resource, PaginatedList } from '../types';
+import { Resource, PaginatedList, ExecutionOption } from '../types';
 
 export type StorageType = 'DiskStorage' | 'RemoteDiskStorage' | 'S3Storage';
 
@@ -46,6 +46,10 @@ export type ListStorageOptions = {
   createdBy?: string;
   updatedBy?: string;
 };
+export type CreateStorageOptions = ExecutionOption & {};
+export type UpdateStorageOptions = ExecutionOption & {};
+export type TagStorageOptions = ExecutionOption & {};
+export type DeprecateStorageOptions = ExecutionOption & {};
 
 export type StoragePayload =
   | DiskStoragePayload

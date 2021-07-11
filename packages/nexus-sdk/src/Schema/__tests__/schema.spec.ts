@@ -140,7 +140,7 @@ describe('Views', () => {
       await schema.create('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/schemas/org/project',
+        'http://api.url/v1/schemas/org/project?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -185,7 +185,7 @@ describe('Views', () => {
       await schema.update('org', 'project', 'myViewId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/schemas/org/project/myViewId?rev=1',
+        'http://api.url/v1/schemas/org/project/myViewId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -202,7 +202,7 @@ describe('Views', () => {
       await schema.tag('org', 'project', 'myViewId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/schemas/org/project/myViewId?rev=1',
+        'http://api.url/v1/schemas/org/project/myViewId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -215,7 +215,7 @@ describe('Views', () => {
       await schema.deprecate('org', 'project', 'myViewId', 1);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/schemas/org/project/myViewId?rev=1',
+        'http://api.url/v1/schemas/org/project/myViewId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].method).toEqual('DELETE');
     });

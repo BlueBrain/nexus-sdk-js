@@ -153,7 +153,7 @@ describe('File', () => {
       await file.create('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project',
+        'http://api.url/v1/files/org/project?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(myFile);
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -170,7 +170,7 @@ describe('File', () => {
       await file.create('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myFileId',
+        'http://api.url/v1/files/org/project/myFileId?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(myFile);
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -216,7 +216,7 @@ describe('File', () => {
 
       expect(fetchMock.mock.calls.length).toEqual(2);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project',
+        'http://api.url/v1/files/org/project?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(myFile);
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -239,7 +239,7 @@ describe('File', () => {
       await file.create('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myFileId?storage=someStorageId',
+        'http://api.url/v1/files/org/project/myFileId?execution=consistent&storage=someStorageId',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(myFile);
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -259,7 +259,7 @@ describe('File', () => {
       await file.update('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myFileId?rev=1',
+        'http://api.url/v1/files/org/project/myFileId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(myFile);
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -303,7 +303,7 @@ describe('File', () => {
       await file.update('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myFileId?rev=1&storage=someStorageId',
+        'http://api.url/v1/files/org/project/myFileId?execution=consistent&rev=1&storage=someStorageId',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(myFile);
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -321,7 +321,7 @@ describe('File', () => {
       await file.link('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project',
+        'http://api.url/v1/files/org/project?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -338,7 +338,7 @@ describe('File', () => {
       await file.link('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myId',
+        'http://api.url/v1/files/org/project/myId?execution=consistent',
       );
       const { '@id': id, ...expected } = payload;
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(expected));
@@ -357,7 +357,7 @@ describe('File', () => {
       await file.link('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myId?storage=someStorageId',
+        'http://api.url/v1/files/org/project/myId?execution=consistent&storage=someStorageId',
       );
       const { '@id': id, storage, ...expected } = payload;
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(expected));
@@ -376,7 +376,7 @@ describe('File', () => {
       await file.tag('org', 'project', 'myId', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myId/tags?rev=1',
+        'http://api.url/v1/files/org/project/myId/tags?execution=consistent&rev=1',
       );
       const { previousRev, ...expected } = payload;
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(expected));
@@ -390,7 +390,7 @@ describe('File', () => {
       await file.deprecate('org', 'project', 'myId', 1);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/files/org/project/myId?rev=1',
+        'http://api.url/v1/files/org/project/myId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].method).toEqual('DELETE');
     });

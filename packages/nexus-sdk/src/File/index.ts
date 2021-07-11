@@ -6,6 +6,10 @@ import {
   LinkFilePayload,
   UpdateFilePayload,
   CreateFileOptions,
+  LinkFileOptions,
+  UpdateFileOptions,
+  DeprecateFileOptions,
+  TagFileOptions,
 } from './types';
 import { buildHeader, buildQueryParams, parseAsBuilder } from '../utils';
 import {
@@ -61,10 +65,10 @@ const NexusFile = (
       orgLabel: string,
       projectLabel: string,
       payload: FilePayload,
-      options?: CreateFileOptions,
+      options: CreateFileOptions = { execution: 'consistent' },
     ): Promise<NexusFile> => {
       const { '@id': fileId, file: body, storage } = payload;
-      const opts = buildQueryParams({ storage });
+      const opts = buildQueryParams({ storage, execution: options.execution });
       const headers = (options && options.extraHeaders) || {};
 
       return fileId
@@ -90,9 +94,10 @@ const NexusFile = (
       orgLabel: string,
       projectLabel: string,
       payload: LinkFilePayload,
+      options: LinkFileOptions = { execution: 'consistent' },
     ): Promise<NexusFile> => {
       const { '@id': fileId, storage, ...body } = payload;
-      const opts = buildQueryParams({ storage });
+      const opts = buildQueryParams({ storage, ...options });
       return fileId
         ? httpPut({
             body: JSON.stringify(body),
@@ -108,10 +113,14 @@ const NexusFile = (
       orgLabel: string,
       projectLabel: string,
       payload: UpdateFilePayload,
-      options?: CreateFileOptions,
+      options: UpdateFileOptions = { execution: 'consistent' },
     ): Promise<NexusFile> => {
       const { '@id': fileId, file: body, storage, rev } = payload;
-      const opts = buildQueryParams({ rev, storage });
+      const opts = buildQueryParams({
+        rev,
+        storage,
+        execution: options.execution,
+      });
       const headers = (options && options.extraHeaders) || {};
       return httpPut({
         headers,
@@ -124,20 +133,25 @@ const NexusFile = (
       projectLabel: string,
       fileId: string,
       rev: number,
-    ): Promise<NexusFile> =>
-      httpDelete({
-        path: `${context.uri}/files/${orgLabel}/${projectLabel}/${fileId}?rev=${rev}`,
-      }),
+      options: DeprecateFileOptions = { execution: 'consistent' },
+    ): Promise<NexusFile> => {
+      const opts = buildQueryParams({ ...options, rev });
+      return httpDelete({
+        path: `${context.uri}/files/${orgLabel}/${projectLabel}/${fileId}${opts}`,
+      });
+    },
     tag: (
       orgLabel: string,
       projectLabel: string,
       fileId: string,
       payload: TagResourcePayload,
+      options: TagFileOptions = { execution: 'consistent' },
     ): Promise<NexusFile> => {
       const { previousRev, ...body } = payload;
+      const opts = buildQueryParams({ ...options, rev: previousRev });
       return httpPost({
         body: JSON.stringify(body),
-        path: `${context.uri}/files/${orgLabel}/${projectLabel}/${fileId}/tags?rev=${previousRev}`,
+        path: `${context.uri}/files/${orgLabel}/${projectLabel}/${fileId}/tags${opts}`,
       });
     },
     poll: (

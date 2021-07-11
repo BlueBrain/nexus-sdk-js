@@ -1,4 +1,4 @@
-import { Resource, PaginatedList, Context } from '../types';
+import { Resource, PaginatedList, Context, ExecutionOption } from '../types';
 
 export type Property = {
   datatype: string;
@@ -43,3 +43,5 @@ export type SchemaPayload = {
   '@context'?: Context;
   shapes: Shape[];
 };
+
+export type SchemaOptions = ExecutionOption & {};

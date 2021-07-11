@@ -182,7 +182,28 @@ describe('Resource', () => {
       await resource.create('org', 'project', payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/resources/org/project',
+        'http://api.url/v1/resources/org/project?execution=consistent',
+      );
+      expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
+      expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
+    });
+    it('should make httpPost call to the resources api with execution flag set to performant', async () => {
+      fetchMock.mockResponseOnce(JSON.stringify({ data: '' }));
+      const payload = {
+        '@id': 'myResource',
+        '@context': {
+          label: {
+            '@id': 'http://www.w3.org/2000/01/rdf-schema#label',
+          },
+        },
+        something: 'hello!',
+      };
+      await resource.create('org', 'project', payload, undefined, undefined, {
+        execution: 'performant',
+      });
+      expect(fetchMock.mock.calls.length).toEqual(1);
+      expect(fetchMock.mock.calls[0][0]).toEqual(
+        'http://api.url/v1/resources/org/project?execution=performant',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -197,7 +218,7 @@ describe('Resource', () => {
       await resource.create('org', 'project', payload, 'schemaId');
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/resources/org/project/schemaId',
+        'http://api.url/v1/resources/org/project/schemaId?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -213,7 +234,7 @@ describe('Resource', () => {
       await resource.create('org', 'project', payload, undefined, 'resourceId');
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/resources/org/project/_/resourceId',
+        'http://api.url/v1/resources/org/project/_/resourceId?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -235,7 +256,7 @@ describe('Resource', () => {
       );
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/resources/org/project/schemaId/resourceId',
+        'http://api.url/v1/resources/org/project/schemaId/resourceId?execution=consistent',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -257,7 +278,7 @@ describe('Resource', () => {
       await resource.update('org', 'project', 'myResourceId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/resources/org/project/_/myResourceId?rev=1',
+        'http://api.url/v1/resources/org/project/_/myResourceId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('PUT');
@@ -274,7 +295,7 @@ describe('Resource', () => {
       await resource.tag('org', 'project', 'myResourceId', 1, payload);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/resources/org/project/myResourceId?rev=1',
+        'http://api.url/v1/resources/org/project/myResourceId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].body).toEqual(JSON.stringify(payload));
       expect(fetchMock.mock.calls[0][1].method).toEqual('POST');
@@ -287,7 +308,7 @@ describe('Resource', () => {
       await resource.deprecate('org', 'project', 'myResourceId', 1);
       expect(fetchMock.mock.calls.length).toEqual(1);
       expect(fetchMock.mock.calls[0][0]).toEqual(
-        'http://api.url/v1/resources/org/project/_/myResourceId?rev=1',
+        'http://api.url/v1/resources/org/project/_/myResourceId?execution=consistent&rev=1',
       );
       expect(fetchMock.mock.calls[0][1].method).toEqual('DELETE');
     });
